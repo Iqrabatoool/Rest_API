@@ -1,0 +1,17 @@
+JSON DATA IN REST API
+
+GET /api/user  //List all USERS
+
+GET /api/user/1  //Get user with id 1
+
+Dynamic path parameter if written with (:)
+
+POST /api/users  //Make a new User
+
+Patch /api/user/1 //Edit user 1
+
+Delete /api/user/1 //Delete user 1
+
+
+
+
