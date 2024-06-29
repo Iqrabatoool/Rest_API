@@ -1,6 +1,6 @@
 //Boiler plate
 const express = require('express');
-const users = require("./MOCK_DATA.json")
+let users = require("./MOCK_DATA.json")
 const app = express();
 const fs = require('fs');
 const PORT = 8000;
@@ -36,25 +36,24 @@ app.post("/api/users",(req,res)=>{
 app.patch("/api/users/:id", (req, res) => {
   const id = Number(req.params.id);
   const body = req.body;
-
   console.log(body);
-  const user = users.find((user) => user.id === id);
-  Object.assign(user, body);
-  fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err, data) => {
-    return res.json({ status: "success", id: user.id });
-  });
+  let userIndex = users.findIndex((user) => user.id === id); 
+  if (userIndex !== -1) {
+    users[userIndex] = { ...users[userIndex], ...body };
+    fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err,data) => {
+      return res.json({ status: "success", id: id });
+    });
+  } 
 });
 
 //Delete user
-app.delete((req,res)=>{
-  const id = users.params.id;
-  users = users.filter((user) => user.id !==id);
-  fs.writeFile("MOCK_DATA.json", JSON.stringify(users), (err , data)=>{
-
-    return res.json({status :"success", id : user.id})
-  })
-
-})
+app.delete("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id); 
+  users = users.filter((user) => user.id !== id);
+  fs.writeFile("MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+    return res.json({ status: "success", id: id });
+  });
+});
 
 app.listen(PORT , () =>{ console.log(`Server Bagh raha ha ${PORT}`)})
 
